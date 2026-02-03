@@ -1,0 +1,12 @@
+.idea
+.vscode
+/temp/
+/node_modules/
+__pycache__/
+venv
+
+palace_bot.session
+/dev.env
+/prod.env
+.env
+.venv
