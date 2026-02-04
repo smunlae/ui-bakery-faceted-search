@@ -50,7 +50,7 @@ class SearchService:
             parts.append(
                 "EXISTS (SELECT 1 FROM public.product_categories pc "
                 " JOIN public.categories c ON c.id = pc.category_id "
-                f" WHERE pc.product_id = p.id AND c.name = ANY(${idx}::text[])"
+                f" WHERE pc.product_id = p.id AND c.name = ANY(${idx}::text[]))"
             )
             params.append(category_names)
             idx += 1
