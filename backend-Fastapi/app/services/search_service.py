@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import Optional, List, Any, Tuple
 import asyncpg
 import json
@@ -46,14 +48,41 @@ class SearchService:
 
         if include_category and category_names:
             parts.append(
-                "EXISTS (SELECT 1 FROM public.product_categories pc"
-                "JOIN public.categories c ON c.id = pc.category_id"
-                f"WHERE pc.product_id = p.id AND c.name = ANY(${idx}::text[])"
+                "EXISTS (SELECT 1 FROM public.product_categories pc "
+                " JOIN public.categories c ON c.id = pc.category_id "
+                f" WHERE pc.product_id = p.id AND c.name = ANY(${idx}::text[])"
             )
             params.append(category_names)
             idx += 1
         where_sql = ("WHERE "+ " AND ".join(parts)) if parts else ""
         return where_sql, params, idx
+
+    async def _fetch_total(
+        self,
+        conn: asyncpg.Connection,
+        q: Optional[str],
+        brand_names: Optional[List[str]],
+        category_names: Optional[List[str]],
+    ) -> int:
+        params: List[Any] = []
+        where_sql, params, _ = self._where_clause(
+            include_brand=True,
+            include_category=True,
+            q=q,
+            brand_names=brand_names,
+            category_names=category_names,
+            params=params,
+            start_index=1,
+        )
+
+        sql = f"""
+        SELECT COUNT(*)::int AS total
+        FROM public.products p
+        LEFT JOIN public.brands b ON b.id = p.brand_id
+        {where_sql}
+        """
+        row = await conn.fetchrow(sql, *params)
+        return int(row["total"]) if row else 0
 
     async def _fetch_items(self, conn: asyncpg.connection.Connection, q: Optional[str],
                            brand_names: Optional[List[str]], category_names: Optional[List[str]],
