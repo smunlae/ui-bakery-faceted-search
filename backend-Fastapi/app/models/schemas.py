@@ -1,14 +1,13 @@
-from typing import Optional, List
-
+from __future__ import annotations
 from pydantic import BaseModel, Field
-
+from typing import List, Optional
 
 class BrandOut(BaseModel):
     id: int
     name: str
 
 class ProductOut(BaseModel):
-    id: int
+    id: str
     name: str
     image: Optional[str] = None
     created_at: str
@@ -19,7 +18,7 @@ class FacetValue(BaseModel):
     value: str
     count: int
 
-class FasetsOut(BaseModel):
+class FacetsOut(BaseModel):
     brands: List[FacetValue]
     categories: List[FacetValue]
 
@@ -28,4 +27,4 @@ class SearchResponse(BaseModel):
     page: int
     limit: int
     total: int
-    facets: FasetsOut
+    facets: FacetsOut
