@@ -110,7 +110,7 @@ export function SearchPage() {
   return (
     <div className="page">
       <header className="page-header">
-        <h1>Faceted Search NEW</h1>
+        <h1>Faceted Search</h1>
         <SearchBar value={queryInput} onChange={setQueryInput} />
       </header>
 
