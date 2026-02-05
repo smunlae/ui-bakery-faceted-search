@@ -101,6 +101,11 @@ a {
   text-align: left;
 }
 
+.link-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .results {
   display: flex;
   flex-direction: column;

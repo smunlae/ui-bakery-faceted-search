@@ -101,6 +101,12 @@ export function SearchPage() {
     [updateUrl]
   );
 
+  const handleResetFilters = useCallback(() => {
+    updateUrl({ brands: [], categories: [], page: 1 });
+  }, [updateUrl]);
+
+  const hasActiveFilters = urlState.brands.length > 0 || urlState.categories.length > 0;
+
   return (
     <div className="page">
       <header className="page-header">
@@ -110,6 +116,14 @@ export function SearchPage() {
 
       <div className="page-content">
         <aside className="sidebar">
+          <button
+            type="button"
+            className="link-button"
+            onClick={handleResetFilters}
+            disabled={!hasActiveFilters}
+          >
+            Reset filters
+          </button>
           <FacetGroup
             title="Brand"
             items={data.facets?.brands || []}
