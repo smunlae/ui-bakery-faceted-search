@@ -9,6 +9,21 @@
   box-sizing: border-box;
 }
 
+.link-button {
+    background: none;
+    border: none;
+    color: #007bff;
+    text-decoration: underline;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+}
+
+.link-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
 body {
   margin: 0;
   background-color: #0f1115;
